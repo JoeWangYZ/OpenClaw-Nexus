@@ -1,4 +1,5 @@
 // OpenClaw Nexus Integration Tests
+// Responsibility: Mar (QA)
 import assert from 'assert';
 import http from 'http';
 
@@ -21,7 +22,14 @@ async function testHealth() {
   });
 }
 
-// TODO: Add more tests for Node Registration and Task Dispatch
+/**
+ * TODO: Mar to implement the following test cases:
+ * 1. Node Registration: Ensure nodes can register and receive a unique ID.
+ * 2. State Sync: Mock two nodes and verify state propagates through the hub.
+ * 3. RTI Workflow: Dispatch a task and verify it reaches the target node's mock listener.
+ * 4. Error Handling: Verify hub handles invalid tokens and malformed requests.
+ */
+
 async function runTests() {
   try {
     await testHealth();
@@ -33,3 +41,4 @@ async function runTests() {
 }
 
 runTests();
+
