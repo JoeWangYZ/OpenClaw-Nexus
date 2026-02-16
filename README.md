@@ -2,25 +2,58 @@
 
 **OpenClaw Nexus** is the cloud-native coordination and synchronization layer for the OpenClaw AI Agent ecosystem. It enables seamless multi-device state syncing, remote tool execution, and structured agent collaboration.
 
+## 🏗 System Architecture
+
+The Nexus Hub acts as a central relay (PostgreSQL + Redis + WebSocket) that connects distributed OpenClaw nodes.
+
+```mermaid
+graph TD
+    subgraph "Local Node (e.g., Mac Mini)"
+        Jan[Agent: Jan]
+        OCG1[OpenClaw Gateway]
+        Jan --> OCG1
+    end
+
+    subgraph "Remote Node (e.g., GPU Server)"
+        Feb[Agent: Feb]
+        OCG2[OpenClaw Gateway]
+        Feb --> OCG2
+    end
+
+    subgraph "Nexus Hub (Cloud)"
+        API[Nexus API]
+        DB[(PostgreSQL)]
+        Cache[(Redis)]
+    end
+
+    OCG1 <--> API
+    OCG2 <--> API
+    API <--> DB
+    API <--> Cache
+```
+
 ## 🚀 Key Features
 
 - **Context Sync:** Automatically keep `MEMORY.md` and workspace files in sync across your fleet of agents.
 - **Remote Tool Execution (RTI):** Run commands on a remote server from your local agent session.
-- **Agent Orchestration:** Structured task handoff between agents (e.g., Jan delegating to Feb/Mar).
-- **Fleet Dashboard:** Monitor all your active OpenClaw nodes from a central location.
+- **Agent Orchestration:** Structured task handoff between agents.
 
 ## 🛠 Tech Stack
 
 - **Server:** Node.js, Express, WebSocket (ws)
 - **Database:** PostgreSQL (Metadata), Redis (Task Queue & PubSub)
-- **Deployment:** Docker, Docker Compose
 
 ## 📖 Getting Started
 
+### Prerequisites
+- Node.js v18+
+- PostgreSQL & Redis (or use Docker)
+
+### Installation
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-org/nexus.git
-   cd nexus/nexus-hub
+   git clone https://github.com/JoeWangYZ/OpenClaw-Nexus.git
+   cd OpenClaw-Nexus
    ```
 
 2. **Install dependencies:**
@@ -29,16 +62,25 @@
    ```
 
 3. **Set up environment variables:**
-   Create a `.env` file based on `.env.example`.
+   ```bash
+   cp .env.example .env
+   # Update .env with your DB credentials
+   ```
 
 4. **Run the hub:**
    ```bash
    npm start
    ```
 
+## 🤝 Contributing
+
+We welcome contributions! Please follow these steps:
+1. Fork the repo.
+2. Create a feature branch (`git checkout -b feature/amazing-feature`).
+3. Commit your changes (`git commit -m 'Add amazing feature'`).
+4. Push to the branch (`git push origin feature/amazing-feature`).
+5. Open a Pull Request.
+
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
-
----
-*Part of the OpenClaw ecosystem.*
