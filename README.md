@@ -4,7 +4,13 @@
 
 ## 🏗 System Architecture
 
-The Nexus Hub acts as a central relay (PostgreSQL + Redis + WebSocket) that connects distributed OpenClaw nodes.
+The OpenClaw Nexus Hub serves as the central nervous system for distributed OpenClaw nodes. It manages identity, state persistence, and real-time message routing.
+
+### Components
+1. **Nexus API (Core):** A Node.js/Express server providing RESTful endpoints for node registration and task management.
+2. **State Sync Engine:** Uses PostgreSQL to store metadata and file deltas, ensuring all agents share a consistent memory state.
+3. **RTI (Remote Tool Invocation) Relay:** A WebSocket-based relay that dispatches tool execution requests from one node to another.
+4. **Persistence Layer:** PostgreSQL for relational data and Redis for fast task queuing and PubSub.
 
 ```mermaid
 graph TD
@@ -26,11 +32,12 @@ graph TD
         Cache[(Redis)]
     end
 
-    OCG1 <--> API
-    OCG2 <--> API
+    OCG1 <--- "Sync/RTI (WS/REST)" ---> API
+    OCG2 <--- "Sync/RTI (WS/REST)" ---> API
     API <--> DB
     API <--> Cache
 ```
+
 
 ## 🚀 Key Features
 
